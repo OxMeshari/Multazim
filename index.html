@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ملتزم – Moltazim</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="app-header">
+    <div class="brand">
+      <img src="assets/logo.png" alt="Moltazim logo" class="logo">
+      <div>
+        <div class="brand-name">ملتزم</div>
+        <div class="brand-sub">Moltazim</div>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button id="themeToggle" class="ghost-btn" aria-label="Toggle theme">🌞 / 🌙</button>
+      <div class="lang">English | عربي</div>
+      <div class="user-pill" id="userPill">Guest</div>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <nav>
+        <div class="nav-section">Access</div>
+        <button class="nav-link" data-target="login">Login</button>
+        <button class="nav-link" data-target="register">Registration</button>
+        <div class="nav-section">Dashboards</div>
+        <button class="nav-link" data-target="manager-dashboard">Manager Dashboard</button>
+        <button class="nav-link" data-target="employee-dashboard">Employee Dashboard</button>
+        <div class="nav-section">Workflows</div>
+        <button class="nav-link" data-target="task-detail">Task Detail</button>
+        <button class="nav-link" data-target="evidence">Evidence Library</button>
+        <button class="nav-link" data-target="manager-ai-review">Manager AI Review</button>
+        <button class="nav-link" data-target="reports">Reports & Export</button>
+        <div class="nav-section">Platform</div>
+        <button class="nav-link" data-target="admin">Admin</button>
+        <button class="nav-link" data-target="settings">Settings</button>
+      </nav>
+    </aside>
+
+    <main id="content">
+      <!-- Registration -->
+      <section id="register" class="page">
+        <div class="page-header">
+          <div>
+            <h1>Registration</h1>
+            <p>Create your Moltazim account to start managing ECC controls.</p>
+          </div>
+        </div>
+        <div class="card form-grid">
+          <form id="registerForm" class="two-col-form">
+            <label>Full Name
+              <input type="text" name="fullName" required>
+            </label>
+            <label>Email
+              <input type="email" name="email" required>
+            </label>
+            <label>Role
+              <select name="role" required>
+                <option value="manager">Manager</option>
+                <option value="employee">Employee</option>
+              </select>
+            </label>
+            <label>Department
+              <input type="text" name="department" required>
+            </label>
+            <label>Organization
+              <input type="text" name="organization" required>
+            </label>
+            <label>Password
+              <input type="password" name="password" required>
+            </label>
+            <label>Confirm Password
+              <input type="password" name="confirm" required>
+            </label>
+            <button type="submit" class="primary-btn full-span">Create Account</button>
+          </form>
+          <div id="registerSuccess" class="success-box hidden">
+            <p>Account created successfully! You can now login.</p>
+            <button class="primary-btn" data-target="login">Go to Login</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Login -->
+      <section id="login" class="page">
+        <div class="page-header">
+          <div>
+            <h1>Login</h1>
+            <p>Welcome back to Moltazim. Choose your role to enter.</p>
+          </div>
+        </div>
+        <div class="card form-grid narrow">
+          <form id="loginForm">
+            <label>Email
+              <input type="email" name="email" required>
+            </label>
+            <label>Password
+              <input type="password" name="password" required>
+            </label>
+            <label>Login as
+              <select name="role">
+                <option value="manager">Manager</option>
+                <option value="employee">Employee</option>
+              </select>
+            </label>
+            <button type="submit" class="primary-btn full-span">Login</button>
+          </form>
+        </div>
+      </section>
+
+      <!-- Manager Dashboard -->
+      <section id="manager-dashboard" class="page">
+        <div class="page-header">
+          <div>
+            <h1>Manager Dashboard</h1>
+            <p>Monitor ECC compliance across all controls and teams.</p>
+          </div>
+          <div class="header-actions">
+            <button class="ghost-btn" data-target="evidence">Evidence Library</button>
+            <button class="ghost-btn" data-target="manager-ai-review">Manager AI Review</button>
+            <button class="ghost-btn" data-target="reports">Reports & Export</button>
+          </div>
+        </div>
+        <div class="grid three">
+          <div class="card kpi" id="overallScoreCard"></div>
+          <div class="card kpi" id="taskStatusCard"></div>
+          <div class="card kpi" id="gapsCard"></div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <h3>All Tasks</h3>
+            <div class="filters">
+              <select id="filterStatus"></select>
+              <select id="filterOwner"></select>
+              <select id="filterDomain"></select>
+            </div>
+          </div>
+          <table class="data-table" id="managerTasksTable">
+            <thead>
+              <tr>
+                <th>Control</th>
+                <th>Title</th>
+                <th>Owner</th>
+                <th>Status</th>
+                <th>Due</th>
+                <th>Progress</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Employee Dashboard -->
+      <section id="employee-dashboard" class="page">
+        <div class="page-header">
+          <div>
+            <h1>Employee Dashboard</h1>
+            <p>Your assigned ECC tasks and deadlines.</p>
+          </div>
+          <div class="header-actions">
+            <div id="employeeStats"></div>
+          </div>
+        </div>
+        <div class="card">
+          <table class="data-table" id="employeeTasksTable">
+            <thead>
+              <tr>
+                <th>Task</th>
+                <th>Control</th>
+                <th>Status</th>
+                <th>Due</th>
+                <th>Progress</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Task Detail -->
+      <section id="task-detail" class="page">
+        <div class="page-header">
+          <div>
+            <h1>Task Detail</h1>
+            <p id="taskSubtitle">Select a task to see details and evidence.</p>
+          </div>
+          <div class="header-actions" id="taskActions"></div>
+        </div>
+        <div class="grid two">
+          <div class="card" id="taskInfoCard"></div>
+          <div class="card" id="timelineCard"></div>
+        </div>
+        <div class="grid two">
+          <div class="card" id="evidenceListCard"></div>
+          <div class="card" id="aiReviewCard"></div>
+        </div>
+      </section>
+
+      <!-- Evidence Library -->
+      <section id="evidence" class="page">
+        <div class="page-header">
+          <div>
+            <h1>Evidence Library</h1>
+            <p>All evidence across ECC controls.</p>
+          </div>
+          <div class="filters">
+            <select id="filterDomainEvidence"></select>
+            <select id="filterOwnerEvidence"></select>
+            <select id="filterLabelEvidence"></select>
+            <select id="filterStatusEvidence"></select>
+          </div>
+        </div>
+        <div class="card">
+          <table class="data-table" id="evidenceTable">
+            <thead>
+              <tr>
+                <th>Control</th>
+                <th>Task</th>
+                <th>Evidence</th>
+                <th>Owner</th>
+                <th>AI Label</th>
+                <th>Status</th>
+                <th>Updated</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Manager AI Review -->
+      <section id="manager-ai-review" class="page">
+        <div class="page-header">
+          <div>
+            <h1>Manager AI Review</h1>
+            <p>AI-generated compliance insights. Assistive only.</p>
+          </div>
+        </div>
+        <div class="grid two">
+          <div class="card" id="aiSummaryCard"></div>
+          <div class="card" id="domainListCard"></div>
+        </div>
+        <div class="card" id="domainDetailCard"></div>
+      </section>
+
+      <!-- Reports -->
+      <section id="reports" class="page">
+        <div class="page-header">
+          <div>
+            <h1>Reports & Export</h1>
+            <p>Generate compliance summaries for stakeholders.</p>
+          </div>
+          <div class="header-actions">
+            <button class="ghost-btn" id="downloadPdf">Download PDF (mock)</button>
+            <button class="ghost-btn" id="exportCsv">Export CSV (mock)</button>
+          </div>
+        </div>
+        <div class="grid two">
+          <div class="card" id="reportOverview"></div>
+          <div class="card" id="reportChartMock"></div>
+        </div>
+        <div class="card" id="reportTable"></div>
+      </section>
+
+      <!-- Admin -->
+      <section id="admin" class="page">
+        <div class="page-header">
+          <div>
+            <h1>Admin</h1>
+            <p>Manage users and departments.</p>
+          </div>
+        </div>
+        <div class="grid two">
+          <div class="card">
+            <div class="card-header">
+              <h3>Users</h3>
+            </div>
+            <table class="data-table" id="usersTable">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Role</th>
+                  <th>Department</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <h3>Add / Edit User</h3>
+            </div>
+            <form id="userForm" class="two-col-form">
+              <input type="hidden" name="id">
+              <label>Name
+                <input type="text" name="name" required>
+              </label>
+              <label>Email
+                <input type="email" name="email" required>
+              </label>
+              <label>Role
+                <select name="role">
+                  <option value="manager">Manager</option>
+                  <option value="employee">Employee</option>
+                </select>
+              </label>
+              <label>Department
+                <input type="text" name="department" required>
+              </label>
+              <button type="submit" class="primary-btn full-span">Save User</button>
+            </form>
+            <div class="department-box">
+              <h4>Departments</h4>
+              <ul id="departmentList"></ul>
+              <div class="inline-form">
+                <input type="text" id="newDepartment" placeholder="Add department">
+                <button id="addDepartment" class="ghost-btn">Add</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Settings -->
+      <section id="settings" class="page">
+        <div class="page-header">
+          <div>
+            <h1>Settings</h1>
+            <p>Adjust scoring weights and AI preferences.</p>
+          </div>
+        </div>
+        <div class="grid two">
+          <div class="card" id="weightsCard"></div>
+          <div class="card" id="togglesCard"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <footer class="footer">Prototype for ملتزم – AI-Powered ECC Compliance</footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
